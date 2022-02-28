@@ -1,32 +1,14 @@
 pipeline {
-  agent any
+  agent { dockerfile true }
   stages {
-    stage('install playwright') {
-      steps {
-        sh '''
-          npm i -D @playwright/test
-          npx playwright install
-        '''
-      }
-    }
-    stage('help') {
-      steps {
-        sh 'npx playwright test --help'
-      }
-    }
     stage('test') {
       steps {
         sh '''
-          npx playwright test --list
-          npx playwright test
+          node --version
+          git --version
+          curl --version
         '''
       }
-      post {
-        success {
-          archiveArtifacts(artifacts: 'homepage-*.png', followSymlinks: false)
-          sh 'rm -rf *.png'
-        }
-      }
+    }
     }
   }
-}
